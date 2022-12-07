@@ -8,14 +8,24 @@ const userSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
-    unique:true
+    unique: true,
   },
-  password:{
-    type:String,
-    required:true
+
+  password: {
+    type: String,
+    required: true,
   },
-  company:{
-    type:String
-  }
+  status: {
+    type: String,
+    enum: ["Pending", "Active"],
+    default: "Pending",
+  },
+  confirmationCode: {
+    type: String,
+    unique: true,
+  },
+  company: {
+    type: String,
+  },
 });
 module.exports = mongoose.model("User", userSchema);

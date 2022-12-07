@@ -19,6 +19,7 @@
     "moment": "^2.29.3",
     "mongodb": "^4.6.0",
     "mongoose": "^6.3.5",
+    "nodemailer": "^6.8.0",
     "shortid": "^2.2.16"
   },
   "devDependencies": {

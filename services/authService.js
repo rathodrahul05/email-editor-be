@@ -9,7 +9,6 @@ const loginUser = async (req, res) => {
   }
 };
 
-const signUp = () => {};
 const refreshAuth = async (refreshToken) => {
   try {
     const refreshTokenDoc = await tokenService.verifyToken(
@@ -25,14 +24,52 @@ const refreshAuth = async (refreshToken) => {
     } else {
       throw new Error();
     }
-   
   } catch (error) {
     console.log(error, "please auth");
-   
   }
 };
+const verifyUser = async (req, res) => {
+  let user = await User.findOne({
+    confirmationCode: req.params.confirmationCode,
+  });
+
+  
+  if (user) {
+    user.status = "Active";
+    const temp=await user.save();
+   
+    return temp
+  } else {
+    return res.status(404).send({ message: "User Not found." });
+  }
+};
+const verifySocialUser = async (req, res) => {
+  let user = await User.findOne({
+    email: req.body.email,
+  });
+
+  
+  if (user) {
+    user.status = "Active";
+    const temp=await user.save();
+   
+    return temp
+  } else {
+    return res.status(404).send({ message: "User Not found." });
+  }
+};
+const socialLoginUser=async(req,res)=>{
+  let user = await User.findOne({ email: req.body.email });
+  if (user) {
+    const updatedUser = await verifySocialUser(req, res);
+    return updatedUser;
+  }
+}
+
 module.exports = {
   loginUser,
-  signUp,
   refreshAuth,
+  verifyUser,
+  verifySocialUser,
+  socialLoginUser
 };
